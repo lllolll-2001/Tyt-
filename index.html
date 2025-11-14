@@ -3,13 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Шиномонтаж - Бронирование</title>
+<title>Шиномонтаж</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap">
+
+  <!-- === Форма записи === -->
   <div class="card">
-    <h2>Бронирование</h2>
+    <h2>Запись на шиномонтаж</h2>
     <div class="form-row">
       <input type="text" id="guestName" placeholder="Имя">
       <select id="guestCarType">
@@ -41,15 +43,24 @@
     </div>
   </div>
 
-  <div class="card info">
-    <p>Мы работаем: 8:00 - 17:00</p>
-    <a href="https://t.me/VladyslavShunu" target="_blank">
-      <button>Написать в Telegram</button>
-    </a>
+  <!-- === График работы, карта и Телеграм === -->
+  <div class="card">
+    <h2>Информация</h2>
+    <p>График работы: 8:00 - 17:00</p>
     <a href="https://maps.app.goo.gl/8dckvubnHAVDgD2G6" target="_blank">
       <button>Мы на карте</button>
     </a>
+    <a href="https://t.me/VladyslavShunu" target="_blank">
+      <button>Написать в Telegram</button>
+    </a>
   </div>
+
+  <!-- === Список будущих броней === -->
+  <div class="card">
+    <h2>Будущие записи</h2>
+    <div id="recordsList"></div>
+  </div>
+
 </div>
 <script src="script.js"></script>
 </body>
