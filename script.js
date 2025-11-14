@@ -1,8 +1,8 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkWctotFr9nlRRhNxfUPUfdOKR41he7NvrhgLU8iNF5YF82jlx6Y9Fata5eiP6tmPbjw/exec';
+const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbwkWctotFr9nlRRhNxfUPUfdOKR41he7NvrhgLU8iNF5YF82jlx6Y9Fata5eiP6tmPbjw/exec';
 
-document.getElementById('guestDate').min = new Date().toISOString().split('T')[0];
+let futureRecordsDiv = document.getElementById('futureRecords');
 
-// ====== Заполняем слоты по времени ======
+// ==== Временные слоты ====
 function fillTimeSelect() {
   const select = document.getElementById('guestTime');
   select.innerHTML = '';
@@ -13,7 +13,10 @@ function fillTimeSelect() {
 }
 fillTimeSelect();
 
-// ====== Добавление записи ======
+// ==== Минимальная дата ====
+document.getElementById('guestDate').min = new Date().toISOString().split('T')[0];
+
+// ==== Добавление записи ====
 function addGuestRecord() {
   const name = document.getElementById('guestName').value.trim();
   const car = document.getElementById('guestCarType').value;
@@ -27,53 +30,46 @@ function addGuestRecord() {
     return;
   }
 
-  fetch(SCRIPT_URL, {
+  fetch(SPREADSHEET_URL, {
     method: 'POST',
-    body: JSON.stringify({ 
-      action: 'addRecord', 
-      name, car, radius, service, date, time 
-    }),
+    body: JSON.stringify({ action: 'add', name, car, radius, service, date, time }),
     headers: { 'Content-Type': 'application/json' }
   })
   .then(res => res.json())
   .then(data => {
-    if(data.success){
+    if(data.result === 'success'){
       alert('Запись добавлена!');
-      loadRecords();
+      document.getElementById('guestName').value = '';
+      loadFutureRecords();
     } else {
-      alert(data.message || 'Ошибка добавления записи');
+      alert(data.message || 'Ошибка добавления');
     }
   })
-  .catch(err => {
-    console.error(err);
-    alert('Ошибка сети');
-  });
+  .catch(e => alert('Ошибка сети'));
 }
 
-// ====== Загрузка будущих записей ======
-function loadRecords(){
-  fetch(SCRIPT_URL, {
+// ==== Загрузка будущих записей ====
+function loadFutureRecords() {
+  fetch(SPREADSHEET_URL, {
     method: 'POST',
-    body: JSON.stringify({ action: 'getRecords' }),
+    body: JSON.stringify({ action: 'list' }),
     headers: { 'Content-Type': 'application/json' }
   })
   .then(res => res.json())
   .then(data => {
-    const list = document.getElementById('recordsList');
-    list.innerHTML = '';
-    const today = new Date();
+    futureRecordsDiv.innerHTML = '';
+    const now = new Date();
     data.records.forEach(r => {
       const recDate = new Date(r.date + ' ' + r.time);
-      if(recDate >= today){
+      if(recDate >= now){
         const div = document.createElement('div');
         div.className = 'record';
         div.innerText = `${r.date} ${r.time} | ${r.name} | ${r.car} | ${r.radius} | ${r.service}`;
-        list.appendChild(div);
+        futureRecordsDiv.appendChild(div);
       }
     });
-  })
-  .catch(err => console.error(err));
+  });
 }
 
-// ====== Инициализация ======
-loadRecords();
+// ==== Инициализация ====
+loadFutureRecords();
