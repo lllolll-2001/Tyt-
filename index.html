@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Шиномонтаж — Бронь</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Шиномонтаж</h1>
+      <div class="hdr-right">
+        <button id="logoutBtn" class="hidden">Выйти</button>
+      </div>
+    </header>
+
+    <!-- Booking -->
+    <section class="card" id="bookingCard">
+      <h2>Бронь</h2>
+      <div class="form-grid">
+        <input id="guestName" placeholder="Имя" />
+        <select id="guestCarType">
+          <option>Легковая</option><option>Кроссовер</option><option>Внедорожник</option>
+          <option>Микроавтобус</option><option>Коммерческий транспорт</option>
+        </select>
+        <select id="radiusSelect">
+          <option>R13</option><option>R14</option><option>R15</option><option>R16</option>
+          <option>R17</option><option>R18</option><option>R19</option><option>R20</option><option>R21</option>
+        </select>
+        <select id="serviceSelect">
+          <option>Балансировка</option><option>Замена резины</option><option>Ремонт шины</option>
+        </select>
+        <input type="date" id="guestDate"/>
+        <select id="guestTime"></select>
+      </div>
+      <div class="row">
+        <button id="bookBtn">Записаться</button>
+        <span id="bookMsg" class="msg"></span>
+      </div>
+
+      <div class="info-row">
+        <p>Рабочие часы: <strong>08:00 — 17:00</strong></p>
+        <a href="https://maps.app.goo.gl/8dckvubnHAVDgD2G6" target="_blank"><button>Карта</button></a>
+        <a href="https://t.me/VladyslavShunu" target="_blank"><button>Telegram</button></a>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section class="card" id="loginCard">
+      <h2>Вход (работник / босс)</h2>
+      <input id="loginInput" placeholder="Логин" />
+      <input id="passwordInput" placeholder="Пароль" type="password" />
+      <div class="row">
+        <button id="loginBtn">Войти</button>
+        <span id="loginMsg" class="msg"></span>
+      </div>
+      <p class="hint">Пароли проверяются только на сервере — в этом файле их нет.</p>
+    </section>
+
+    <!-- Admin area -->
+    <section class="card hidden" id="adminCard">
+      <h2>Кабинет</h2>
+      <div class="controls">
+        <button id="refreshBtn">Обновить</button>
+        <button id="noBookingBtn">Добавить без записи</button>
+
+        <div class="range">
+          <button class="rangeBtn" data-range="day">День</button>
+          <button class="rangeBtn" data-range="week">Неделя</button>
+          <button class="rangeBtn" data-range="month">Месяц</button>
+          <input type="date" id="fromDate" />
+          <input type="date" id="toDate" />
+          <button id="rangeShowBtn">Показать</button>
+        </div>
+
+        <div class="total">Сумма: <span id="totalSum">0</span> грн</div>
+      </div>
+
+      <div id="recordsList"></div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
