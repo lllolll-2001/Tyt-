@@ -1,67 +1,49 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Шиномонтаж</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="wrap">
+const SPREADSHEET_ID = '1ML7kfYA2q79rNebYYK8wnMvnSxaD-1kaKaIqqPotcUs';
+const SHEET_NAME = 'Лист1';
 
-  <!-- === Форма записи === -->
-  <div class="card">
-    <h2>Запись на шиномонтаж</h2>
-    <div class="form-row">
-      <input type="text" id="guestName" placeholder="Имя">
-      <select id="guestCarType">
-        <option>Легковая</option>
-        <option>Кроссовер</option>
-        <option>Внедорожник</option>
-        <option>Микроавтобус</option>
-        <option>Коммерческий транспорт</option>
-      </select>
-      <select id="radiusSelect">
-        <option>R13</option>
-        <option>R14</option>
-        <option>R15</option>
-        <option>R16</option>
-        <option>R17</option>
-        <option>R18</option>
-        <option>R19</option>
-        <option>R20</option>
-        <option>R21</option>
-      </select>
-      <select id="serviceSelect">
-        <option>Замена резины</option>
-        <option>Балансировка</option>
-        <option>Ремонт шины</option>
-      </select>
-      <input type="date" id="guestDate" min="">
-      <select id="guestTime"></select>
-      <button onclick="addGuestRecord()">Записаться</button>
-    </div>
-  </div>
+function doGet(e) {
+  // Выдаём HTML страницу
+  return HtmlService.createHtmlOutputFromFile('index');
+}
 
-  <!-- === График работы, карта и Телеграм === -->
-  <div class="card">
-    <h2>Информация</h2>
-    <p>График работы: 8:00 - 17:00</p>
-    <a href="https://maps.app.goo.gl/8dckvubnHAVDgD2G6" target="_blank">
-      <button>Мы на карте</button>
-    </a>
-    <a href="https://t.me/VladyslavShunu" target="_blank">
-      <button>Написать в Telegram</button>
-    </a>
-  </div>
+function doPost(e) {
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
 
-  <!-- === Список будущих броней === -->
-  <div class="card">
-    <h2>Будущие записи</h2>
-    <div id="recordsList"></div>
-  </div>
+  // Если отправка брони
+  if(e.parameter.action === 'book') {
+    const name = e.parameter.name || '';
+    const car = e.parameter.car || '';
+    const radius = e.parameter.radius || '';
+    const service = e.parameter.service || '';
+    const date = e.parameter.date || '';
+    const time = e.parameter.time || '';
 
-</div>
-<script src="script.js"></script>
-</body>
-</html>
+    // Проверяем, есть ли запись на это время
+    const data = sheet.getDataRange().getValues();
+    const conflict = data.find(row => row[4] === date && row[5] === time);
+    if(conflict) {
+      return ContentService.createTextOutput('ERROR: Время занято');
+    }
+
+    sheet.appendRow([new Date(), name, car, radius, date, time, service]);
+    return ContentService.createTextOutput('OK');
+  }
+
+  return ContentService.createTextOutput('ERROR: Неверная операция');
+}
+
+// Получение будущих записей
+function getBookings() {
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  const now = new Date();
+  const future = data.filter(row => new Date(row[4] + ' ' + row[5]) >= now);
+  return future.map(r => ({
+    name: r[1],
+    car: r[2],
+    radius: r[3],
+    date: r[4],
+    time: r[5],
+    service: r[6]
+  }));
+}
