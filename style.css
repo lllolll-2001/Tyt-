@@ -1,23 +1,46 @@
-:root{--bg:#000;--card:#111;--accent:#c62828;--text:#fff;--muted:#9a9a9a}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-.wrap{max-width:920px;margin:12px auto;padding:12px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-header h1{margin:0;font-size:1.4rem}
-.hdr-right button{background:transparent;border:1px solid #333;color:#fff;padding:6px;border-radius:6px}
-.card{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #222}
-.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:8px}
-.row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
-input,select,button{padding:8px;border-radius:6px;border:none;background:#222;color:#fff;font-size:15px}
-button{background:var(--accent);cursor:pointer}
-button:hover{filter:brightness(0.9)}
-.msg{margin-left:8px;font-weight:600}
-.hint{font-size:13px;color:var(--muted);margin-top:8px}
-.hidden{display:none}
-.record{padding:10px;border-radius:8px;background:#0f0f0f;margin-bottom:8px;border:1px solid #222}
-.record .top{font-weight:700}
-.record .sub{color:var(--muted);margin-top:4px;margin-bottom:6px}
-.controls{display:flex;gap:6px;margin-top:8px}
-.controls button{background:#8b0000;padding:6px 10px}
-.controls button:first-child{background:#1b5e20}
-@media(max-width:560px){ .form-grid{grid-template-columns:1fr} .controls{flex-direction:column;align-items:flex-start} }
+body {
+  background: #000;
+  color: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.card {
+  background: #111;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+button {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkred;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: none;
+}
